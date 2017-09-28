@@ -20,8 +20,11 @@ function ParseLibraryGeometries (library_geometries) {
 
   // Get index list offsets for vertex data - vertex, normal, texcoord
   var offsets = {}
+  var maxOffset = 0;
   indexList[0].input.forEach(function (input) {
-    offsets[input.$.semantic.toLowerCase()] = parseInt(input.$.offset)
+    var offset = parseInt(input.$.offset);
+    offsets[input.$.semantic.toLowerCase()] = offset
+    maxOffset = Math.max(maxOffset,offset) 
   })
 
   /* Vertex Positions, UVs, Normals */
@@ -30,16 +33,12 @@ function ParseLibraryGeometries (library_geometries) {
   var vertexNormalIndices = []
   var vertexPositionIndices = []
   var vertexUVIndices = []
-  polylistIndices.forEach(function (vertexIndex, positionInArray) {
-    if (positionInArray % source.length === offsets.vertex) {
-      vertexPositionIndices.push(Number(vertexIndex))
-    } else if (positionInArray % source.length === offsets.normal) {
-      vertexNormalIndices.push(Number(vertexIndex))
-    }
-    if (positionInArray % source.length === offsets.texcoord) {
-      vertexUVIndices.push(Number(vertexIndex))
-    }
-  })
+  for (var i = 0; i < polylistIndices.length ; i+=1+maxOffset) {
+    vertexPositionIndices.push(Number(polylistIndices[i+offsets.vertex]))
+    vertexNormalIndices.push(Number(polylistIndices[i+offsets.normal]))
+    vertexUVIndices.push(Number(polylistIndices[i+offsets.texcoord]))
+  }
+
   var vertexPositions = source[0].float_array[0]._.split(' ').map(Number)
   var vertexNormals = source[1].float_array[0]._.split(' ').map(Number)
   var vertexUVs = []
