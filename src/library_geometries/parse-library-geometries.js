@@ -12,16 +12,15 @@ function ParseLibraryGeometries (library_geometries) {
   var geometryMesh = library_geometries[0].geometry[0].mesh[0]
   var source = geometryMesh.source
 
-  var indexList = geometryMesh.polylist || geometryMesh.triangles || null;
+  var indexList = geometryMesh.polylist || geometryMesh.triangles || null
   if (!indexList) {
-    console.error("Geometry must contain either 'polylist' or 'triangles' object.");
-    return false;
+    console.error("Geometry must contain either 'polylist' or 'triangles' object.")
+    return false
   }
 
-  //get index list offsets for vertex data - vertex, normal, texcoord
-  var vertexOffset, normalOffset, UVOffset
+  // Get index list offsets for vertex data - vertex, normal, texcoord
   var offsets = {}
-  indexList[0].input.forEach( function ( input ) {
+  indexList[0].input.forEach(function (input) {
     offsets[input.$.semantic.toLowerCase()] = parseInt(input.$.offset)
   })
 
@@ -39,7 +38,7 @@ function ParseLibraryGeometries (library_geometries) {
     }
     if (positionInArray % source.length === offsets.texcoord) {
       vertexUVIndices.push(Number(vertexIndex))
-    } 
+    }
   })
   var vertexPositions = source[0].float_array[0]._.split(' ').map(Number)
   var vertexNormals = source[1].float_array[0]._.split(' ').map(Number)
