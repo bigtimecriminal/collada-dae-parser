@@ -31,28 +31,7 @@ function noControlBones (allJointNames, deformationJointNames) {
     }, [])
 
     // Throw an error with a link to the documentation and the names of their non-deformation bones
-    throw new Error(
-      `
-      It looks like you're trying to parse a model that has ${nonDeformJoints.length} non deformation bone${nonDeformJoints.length > 1 ? 's' : ''}.
-
-        -> ${nonDeformJoints.join(', ')}
-
-      ---
-
-      These could be inverse kinematics bones, control bones, pole targets, or other
-      helper bones.
-
-      collada-dae-parser does not support non-deformation bones.
-
-      You might try opening your model in your favorite modeling tool and
-      baking the effects of your control bones into your deformation bones.
-
-      ---
-
-      Here's some documentation on how to account for your control bones in Blender:
-
-        -> https://github.com/chinedufn/collada-dae-parser/blob/master/docs/blender-export/blender-export.md#control-joints
-      `
-    )
+    // TODO: Figure out why template notation is not accepted in these errors.
+    throw new Error( "This error has been removed" )
   }
 }

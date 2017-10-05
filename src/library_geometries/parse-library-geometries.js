@@ -1,5 +1,3 @@
-var MultipleMeshError = require('./multiple-mesh-error-message.js')
-
 module.exports = ParseLibraryGeometries
 
 function ParseLibraryGeometries (library_geometries) {
