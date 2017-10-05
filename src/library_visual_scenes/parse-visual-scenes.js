@@ -26,7 +26,8 @@ function ParseVisualScenes (library_visual_scenes) {
 
   return {
     jointParents: parsedJoints,
-    armatureScale: armatureScale
+    armatureScale: armatureScale,
+    nodes: visualScene.node
   }
 }
 

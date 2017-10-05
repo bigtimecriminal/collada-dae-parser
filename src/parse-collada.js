@@ -61,21 +61,31 @@ function ParseCollada (colladaXML) {
     }
   }
 
+  parsedObject.geometries = []
+  parsedObject.nodes = visualSceneData.nodes
+
   // Return our parsed collada object
-  parsedObject.vertexNormalIndices = parsedLibraryGeometries.vertexNormalIndices
-  parsedObject.vertexNormals = parsedLibraryGeometries.vertexNormals
-  parsedObject.vertexPositionIndices = parsedLibraryGeometries.vertexPositionIndices
-  parsedObject.vertexPositions = parsedLibraryGeometries.vertexPositions
   if (controllerData && controllerData.armatureName) {
     parsedObject.armatureName = controllerData.armatureName
   }
   if (jointParents) {
     parsedObject.jointParents = jointParents
   }
-  if (parsedLibraryGeometries.vertexUVs.length > 0) {
-    parsedObject.vertexUVIndices = parsedLibraryGeometries.vertexUVIndices
-    parsedObject.vertexUVs = parsedLibraryGeometries.vertexUVs
-  }
+  
+  //ANTON TODO: fix this so that it transfers the entire structure
+  parsedLibraryGeometries.forEach( function(parsedLibraryGeometry) {
+    var parsedGeometry = {}
+    parsedGeometry.id = parsedLibraryGeometry.id
+    parsedGeometry.vertexNormalIndices = parsedLibraryGeometry.vertexNormalIndices
+    parsedGeometry.vertexNormals = parsedLibraryGeometry.vertexNormals
+    parsedGeometry.vertexPositionIndices = parsedLibraryGeometry.vertexPositionIndices
+    parsedGeometry.vertexPositions = parsedLibraryGeometry.vertexPositions
+    if (parsedLibraryGeometry.vertexUVs.length > 0) {
+      parsedGeometry.vertexUVIndices = parsedLibraryGeometry.vertexUVIndices
+      parsedGeometry.vertexUVs = parsedLibraryGeometry.vertexUVs
+    }
+    parsedObject.geometries.push(parsedGeometry);
+  })
   return parsedObject
 }
 
