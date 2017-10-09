@@ -2,12 +2,12 @@ module.exports = ParseLibraryGeometries
 
 function ParseLibraryGeometries (library_geometries) {
   
-
-  var outGeometries = [];
-  var internalGeometries = [];
-  var inGeometries = library_geometries[0].geometry;
+  var outGeometries = []
+  var internalGeometries = []
+  var inGeometries = library_geometries[0].geometry
   
-  inGeometries.forEach( function (library_geometry) {
+  // split multiple connectivity lists into multiple geometries
+  inGeometries.forEach(function (library_geometry) {
     var geometryMesh = library_geometry.mesh[0]
     var indexList = geometryMesh.polylist || geometryMesh.triangles || null
     if (!indexList) {
@@ -15,8 +15,8 @@ function ParseLibraryGeometries (library_geometries) {
       return false
     }
 
-    indexList.forEach( function (subList) {
-      var newGeometry = Object.assign( {}, library_geometry )
+    indexList.forEach(function (subList) {
+      var newGeometry = Object.assign({}, library_geometry)
       var internalIndexList = newGeometry.mesh[0].polylist || newGeometry.mesh[0].triangles
       internalIndexList = [subList]
       
@@ -24,7 +24,7 @@ function ParseLibraryGeometries (library_geometries) {
     })
   })
 
-  internalGeometries.forEach( function (library_geometry) {
+  internalGeometries.forEach(function (library_geometry) {
     var geometryMesh = library_geometry.mesh[0]
     var source = geometryMesh.source
 
@@ -45,7 +45,7 @@ function ParseLibraryGeometries (library_geometries) {
     var vertexNormalIndices = []
     var vertexPositionIndices = []
     var vertexUVIndices = []
-    for (var i = 0; i < polylistIndices.length; i += 1 + maxOffset) {
+    for (var i = 0 i < polylistIndices.length; i += 1 + maxOffset) {
       vertexPositionIndices.push(Number(polylistIndices[i + offsets.vertex]))
       vertexNormalIndices.push(Number(polylistIndices[i + offsets.normal]))
       vertexUVIndices.push(Number(polylistIndices[i + offsets.texcoord]))
@@ -68,8 +68,8 @@ function ParseLibraryGeometries (library_geometries) {
       vertexNormalIndices: vertexNormalIndices,
       vertexPositionIndices: vertexPositionIndices,
       vertexUVIndices: vertexUVIndices
-    });
+    })
   })
 
-  return outGeometries;
+  return outGeometries
 }
