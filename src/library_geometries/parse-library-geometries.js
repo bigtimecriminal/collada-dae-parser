@@ -2,16 +2,33 @@ module.exports = ParseLibraryGeometries
 
 function ParseLibraryGeometries (library_geometries) {
   
-  var geometries = [];
-  library_geometries[0].geometry.forEach( function (library_geometry) {
-    var geometryMesh = library_geometry.mesh[0]
-    var source = geometryMesh.source
 
+  var outGeometries = [];
+  var internalGeometries = [];
+  var inGeometries = library_geometries[0].geometry;
+  
+  inGeometries.forEach( function (library_geometry) {
+    var geometryMesh = library_geometry.mesh[0]
     var indexList = geometryMesh.polylist || geometryMesh.triangles || null
     if (!indexList) {
       console.error("Geometry must contain either 'polylist' or 'triangles' object.")
       return false
     }
+
+    indexList.forEach( function (subList) {
+      var newGeometry = Object.assign( {}, library_geometry )
+      var internalIndexList = newGeometry.mesh[0].polylist || newGeometry.mesh[0].triangles
+      internalIndexList = [subList]
+      
+      internalGeometries.push(newGeometry)
+    })
+  })
+
+  internalGeometries.forEach( function (library_geometry) {
+    var geometryMesh = library_geometry.mesh[0]
+    var source = geometryMesh.source
+
+    var indexList = geometryMesh.polylist || geometryMesh.triangles || null
 
     // Get index list offsets for vertex data - vertex, normal, texcoord
     var offsets = {}
@@ -43,7 +60,7 @@ function ParseLibraryGeometries (library_geometries) {
     }
     /* End Vertex Positions, UVs, Normals */
 
-    geometries.push ({
+    outGeometries.push ({
       id: library_geometry.$.id,
       vertexPositions: vertexPositions,
       vertexNormals: vertexNormals,
@@ -54,5 +71,5 @@ function ParseLibraryGeometries (library_geometries) {
     });
   })
 
-  return geometries;
+  return outGeometries;
 }
