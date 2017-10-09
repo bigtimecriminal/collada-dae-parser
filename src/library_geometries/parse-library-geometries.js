@@ -45,7 +45,7 @@ function ParseLibraryGeometries (library_geometries) {
     var vertexNormalIndices = []
     var vertexPositionIndices = []
     var vertexUVIndices = []
-    for (var i = 0 i < polylistIndices.length; i += 1 + maxOffset) {
+    for (var i = 0; i < polylistIndices.length; i += 1 + maxOffset) {
       vertexPositionIndices.push(Number(polylistIndices[i + offsets.vertex]))
       vertexNormalIndices.push(Number(polylistIndices[i + offsets.normal]))
       vertexUVIndices.push(Number(polylistIndices[i + offsets.texcoord]))
