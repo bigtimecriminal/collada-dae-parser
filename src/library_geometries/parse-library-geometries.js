@@ -16,10 +16,12 @@ function ParseLibraryGeometries (library_geometries) {
     }
 
     indexList.forEach(function (subList) {
-      var newGeometry = Object.assign({}, library_geometry)
+      var newGeometry = JSON.parse(JSON.stringify(library_geometry));
       var internalIndexList = newGeometry.mesh[0].polylist || newGeometry.mesh[0].triangles
-      internalIndexList = [subList]
-      
+
+      //TODO: Make compatible with polylist
+      newGeometry.mesh[0].triangles = [subList]
+
       internalGeometries.push(newGeometry)
     })
   })
@@ -40,7 +42,7 @@ function ParseLibraryGeometries (library_geometries) {
     })
 
     /* Vertex Positions, UVs, Normals */
-    var polylistIndices = indexList[0].p[0].split(' ')
+    var polylistIndices = indexList[0].p[0].trim().split(' ')
 
     var vertexNormalIndices = []
     var vertexPositionIndices = []
