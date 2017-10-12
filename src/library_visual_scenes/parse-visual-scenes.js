@@ -24,10 +24,15 @@ function ParseVisualScenes (library_visual_scenes) {
     */
   })
 
+  // retrieve material name references
+  var materialNameReferences = {}
+  visualScene.node[0].instance_geometry[0].bind_material[0].technique_common[0].instance_material.forEach( function (d) { materialNameReferences[d.$.symbol] = d.$.target});
+
   return {
     jointParents: parsedJoints,
     armatureScale: armatureScale,
-    nodes: visualScene.node
+    nodes: visualScene.node,
+    materialNameReferences: materialNameReferences
   }
 }
 

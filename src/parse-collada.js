@@ -1,4 +1,5 @@
 var xmlparser = require('xml-parser')
+var parseLibraryMaterials = require('./library_materials/parse-library-materials.js')
 var parseLibraryGeometries = require('./library_geometries/parse-library-geometries.js')
 var parseLibraryVisualScenes = require('./library_visual_scenes/parse-visual-scenes.js')
 var parseLibraryControllers = require('./library_controllers/parse-library-controllers.js')
@@ -14,6 +15,8 @@ module.exports = ParseCollada
 function ParseCollada (colladaXML) {
   var result = compactXML({}, xmlparser(colladaXML.toString()).root)
   result = { COLLADA: result.COLLADA[0] }
+
+  console.log(result);
 
   var parsedObject = {}
   var parsedLibraryGeometries = parseLibraryGeometries(result.COLLADA.library_geometries)
@@ -72,6 +75,8 @@ function ParseCollada (colladaXML) {
     parsedObject.jointParents = jointParents
   }
   
+  console.log("visualSceneData", visualSceneData)
+
   //ANTON TODO: fix this so that it transfers the entire structure
   parsedLibraryGeometries.forEach( function(parsedLibraryGeometry) {
     var parsedGeometry = {}
@@ -86,6 +91,8 @@ function ParseCollada (colladaXML) {
     }
     parsedObject.geometries.push(parsedGeometry);
   })
+
+  parsedObject.materialNameReferences = visualSceneData.materialNameReferences;
   return parsedObject
 }
 
