@@ -1,5 +1,7 @@
 var xmlparser = require('xml-parser')
+var parseLibraryImages = require('./library_images/parse-library-images.js')
 var parseLibraryMaterials = require('./library_materials/parse-library-materials.js')
+var parseLibraryEffects = require('./library_effects/parse-library-effects.js')
 var parseLibraryGeometries = require('./library_geometries/parse-library-geometries.js')
 var parseLibraryVisualScenes = require('./library_visual_scenes/parse-visual-scenes.js')
 var parseLibraryControllers = require('./library_controllers/parse-library-controllers.js')
@@ -22,6 +24,9 @@ function ParseCollada (colladaXML) {
   var parsedLibraryGeometries = parseLibraryGeometries(result.COLLADA.library_geometries)
 
   var visualSceneData = parseLibraryVisualScenes(result.COLLADA.library_visual_scenes)
+  var materialsData = parseLibraryMaterials(result.COLLADA.library_materials)
+  var effectsData = parseLibraryEffects(result.COLLADA.library_effects)
+  var imagesData = parseLibraryImages(result.COLLADA.library_images)
 
   // The joint parents aren't actually joint parents so we get the joint parents..
   // This lib needs a refactor indeed
@@ -74,8 +79,6 @@ function ParseCollada (colladaXML) {
   if (jointParents) {
     parsedObject.jointParents = jointParents
   }
-  
-  console.log("visualSceneData", visualSceneData)
 
   //ANTON TODO: fix this so that it transfers the entire structure
   parsedLibraryGeometries.forEach( function(parsedLibraryGeometry) {
@@ -93,6 +96,10 @@ function ParseCollada (colladaXML) {
   })
 
   parsedObject.materialNameReferences = visualSceneData.materialNameReferences;
+  parsedObject.materialEffectReferences = materialsData.materialEffectReferences;
+  parsedObject.textureIdReferences = effectsData.textureIdReferences;
+  parsedObject.imageNameReferences = imagesData.imageNameReferences;
+
   return parsedObject
 }
 
