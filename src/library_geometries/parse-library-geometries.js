@@ -64,6 +64,7 @@ function ParseLibraryGeometries (library_geometries) {
 
     outGeometries.push ({
       id: library_geometry.$.id,
+      material: library_geometry.mesh[0].triangles[0].$.material,
       vertexPositions: vertexPositions,
       vertexNormals: vertexNormals,
       vertexUVs: vertexUVs,

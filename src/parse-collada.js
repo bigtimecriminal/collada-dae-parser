@@ -84,6 +84,7 @@ function ParseCollada (colladaXML) {
   parsedLibraryGeometries.forEach( function(parsedLibraryGeometry) {
     var parsedGeometry = {}
     parsedGeometry.id = parsedLibraryGeometry.id
+    parsedGeometry.material = parsedLibraryGeometry.material
     parsedGeometry.vertexNormalIndices = parsedLibraryGeometry.vertexNormalIndices
     parsedGeometry.vertexNormals = parsedLibraryGeometry.vertexNormals
     parsedGeometry.vertexPositionIndices = parsedLibraryGeometry.vertexPositionIndices
