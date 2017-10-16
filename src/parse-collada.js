@@ -96,7 +96,6 @@ function ParseCollada (colladaXML) {
     parsedObject.geometries.push(parsedGeometry);
   })
 
-  parsedObject.materialNameReferences = visualSceneData.materialNameReferences;
   parsedObject.materialEffectReferences = materialsData.materialEffectReferences;
   parsedObject.textureIdReferences = effectsData.textureIdReferences;
   parsedObject.imageNameReferences = imagesData.imageNameReferences;
