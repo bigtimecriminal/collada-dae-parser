@@ -98,6 +98,7 @@ function ParseCollada (colladaXML) {
 
   parsedObject.materialEffectReferences = materialsData.materialEffectReferences;
   parsedObject.textureIdReferences = effectsData.textureIdReferences;
+  parsedObject.effectIdToBlinnProperties = effectsData.effectIdToBlinnProperties;
   parsedObject.imageNameReferences = imagesData.imageNameReferences;
 
   return parsedObject
