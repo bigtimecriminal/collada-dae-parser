@@ -9,7 +9,7 @@ function ParseLibraryEffects (library_effects) {
 
         textureIdReferences[d.$.id] = {}
 
-        //normal map finding
+        //bump texture finding
         var bumpTechnique = d.profile_COMMON[0].technique[0].extra[0].technique.find( function(d) { return "bump" in d });
         if (bumpTechnique) {
             var bumpTextureId = bumpTechnique.bump[0].texture[0].$.texture;
@@ -17,6 +17,16 @@ function ParseLibraryEffects (library_effects) {
             var bumpSurfaceId = bumpEffect["sampler2D"][0].source[0]
             var bumpSurface = d.profile_COMMON[0].newparam.find( function (d) { return (d.$.sid === bumpSurfaceId); });
             textureIdReferences[d.$.id]["bump"] = bumpSurface.surface[0].init_from[0]
+        }
+
+        //spec texture finding
+        if(d.profile_COMMON[0].technique[0].blinn[0]["specular"][0]["texture"])
+        {
+            var specularTextureId = d.profile_COMMON[0].technique[0].blinn[0]["specular"][0]["texture"][0].$["texture"]
+            var specularEffect = d.profile_COMMON[0].newparam.find( function (d) { return (d.$.sid === specularTextureId); });
+            var specularSurfaceId = specularEffect["sampler2D"][0].source[0]
+            var specularSurface = d.profile_COMMON[0].newparam.find( function (d) { return (d.$.sid === specularSurfaceId); });
+            textureIdReferences[d.$.id]["specular"] = specularSurface.surface[0].init_from[0]
         }
 
         //diffuse texture finding
