@@ -7,12 +7,23 @@ function ParseLibraryEffects (library_effects) {
 
     library_effects[0].effect.forEach( function(d) {
 
+        textureIdReferences[d.$.id] = {}
+
+        //normal map finding
+        var bumpTechnique = d.profile_COMMON[0].technique[0].extra[0].technique.find( function(d) { return "bump" in d });
+        if (bumpTechnique) {
+            var bumpTextureId = bumpTechnique.bump[0].texture[0].$.texture;
+            var bumpEffect = d.profile_COMMON[0].newparam.find( function (d) { return (d.$.sid === bumpTextureId); });
+            var bumpSurfaceId = bumpEffect["sampler2D"][0].source[0]
+            var bumpSurface = d.profile_COMMON[0].newparam.find( function (d) { return (d.$.sid === bumpSurfaceId); });
+            textureIdReferences[d.$.id]["bump"] = bumpSurface.surface[0].init_from[0]
+        }
+
         //diffuse texture finding
         var diffuseTextureId = d.profile_COMMON[0].technique[0].blinn[0]["diffuse"][0]["texture"][0].$["texture"]
         var diffuseEffect = d.profile_COMMON[0].newparam.find( function (d) { return (d.$.sid === diffuseTextureId); });
-        var surfaceId = diffuseEffect["sampler2D"][0].source[0]
-        var diffuseSurface = d.profile_COMMON[0].newparam.find( function (d) { return (d.$.sid === surfaceId); });
-        textureIdReferences[d.$.id] = {}
+        var diffuseSurfaceId = diffuseEffect["sampler2D"][0].source[0]
+        var diffuseSurface = d.profile_COMMON[0].newparam.find( function (d) { return (d.$.sid === diffuseSurfaceId); });
         textureIdReferences[d.$.id]["diffuse"] = diffuseSurface.surface[0].init_from[0]
 
         //property finding
