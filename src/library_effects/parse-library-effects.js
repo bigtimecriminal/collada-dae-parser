@@ -6,7 +6,16 @@ function ParseLibraryEffects (library_effects) {
     effectIdToBlinnProperties = {};
 
     library_effects[0].effect.forEach( function(d) {
-        textureIdReferences[d.$.id]= d.profile_COMMON[0].newparam[0].surface[0].init_from[0]
+
+        //diffuse texture finding
+        var diffuseTextureId = d.profile_COMMON[0].technique[0].blinn[0]["diffuse"][0]["texture"][0].$["texture"]
+        var diffuseEffect = d.profile_COMMON[0].newparam.find( function (d) { return (d.$.sid === diffuseTextureId); });
+        var surfaceId = diffuseEffect["sampler2D"][0].source[0]
+        var diffuseSurface = d.profile_COMMON[0].newparam.find( function (d) { return (d.$.sid === surfaceId); });
+        textureIdReferences[d.$.id] = {}
+        textureIdReferences[d.$.id]["diffuse"] = diffuseSurface.surface[0].init_from[0]
+
+        //property finding
         effectIdToBlinnProperties[d.$.id] = {}
         effectIdToBlinnProperties[d.$.id]["ambient"] = d.profile_COMMON[0].technique[0].blinn[0]["ambient"][0].color[0].trim().split(" ").map( function(d) { return parseFloat(d);});
         effectIdToBlinnProperties[d.$.id]["emission"] = d.profile_COMMON[0].technique[0].blinn[0]["emission"][0].color[0].trim().split(" ").map( function(d) { return parseFloat(d);});
