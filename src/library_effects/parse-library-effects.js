@@ -30,11 +30,13 @@ function ParseLibraryEffects (library_effects) {
         }
 
         //diffuse texture finding
-        var diffuseTextureId = d.profile_COMMON[0].technique[0].blinn[0]["diffuse"][0]["texture"][0].$["texture"]
-        var diffuseEffect = d.profile_COMMON[0].newparam.find( function (d) { return (d.$.sid === diffuseTextureId); });
-        var diffuseSurfaceId = diffuseEffect["sampler2D"][0].source[0]
-        var diffuseSurface = d.profile_COMMON[0].newparam.find( function (d) { return (d.$.sid === diffuseSurfaceId); });
-        textureIdReferences[d.$.id]["diffuse"] = diffuseSurface.surface[0].init_from[0]
+        if(d.profile_COMMON[0].technique[0].blinn[0]["diffuse"][0]["texture"]) {
+            var diffuseTextureId = d.profile_COMMON[0].technique[0].blinn[0]["diffuse"][0]["texture"][0].$["texture"]
+            var diffuseEffect = d.profile_COMMON[0].newparam.find( function (d) { return (d.$.sid === diffuseTextureId); });
+            var diffuseSurfaceId = diffuseEffect["sampler2D"][0].source[0]
+            var diffuseSurface = d.profile_COMMON[0].newparam.find( function (d) { return (d.$.sid === diffuseSurfaceId); });
+            textureIdReferences[d.$.id]["diffuse"] = diffuseSurface.surface[0].init_from[0]
+        }
 
         //property finding
         effectIdToBlinnProperties[d.$.id] = {}
