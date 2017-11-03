@@ -89,6 +89,10 @@ function ParseCollada (colladaXML) {
     parsedGeometry.vertexNormals = parsedLibraryGeometry.vertexNormals
     parsedGeometry.vertexPositionIndices = parsedLibraryGeometry.vertexPositionIndices
     parsedGeometry.vertexPositions = parsedLibraryGeometry.vertexPositions
+    parsedGeometry.vertexTangentIndices = parsedLibraryGeometry.vertexTangentIndices
+    parsedGeometry.vertexTangents = parsedLibraryGeometry.vertexTangents
+    parsedGeometry.vertexBitangentIndices = parsedLibraryGeometry.vertexBitangentIndices
+    parsedGeometry.vertexBitangents = parsedLibraryGeometry.vertexBitangents
     if (parsedLibraryGeometry.vertexUVs.length > 0) {
       parsedGeometry.vertexUVIndices = parsedLibraryGeometry.vertexUVIndices
       parsedGeometry.vertexUVs = parsedLibraryGeometry.vertexUVs

@@ -46,30 +46,42 @@ function ParseLibraryGeometries (library_geometries) {
 
     var vertexNormalIndices = []
     var vertexPositionIndices = []
+    var vertexTangentIndices = []
+    var vertexBitangentIndices = []
     var vertexUVIndices = []
     for (var i = 0; i < polylistIndices.length; i += 1 + maxOffset) {
       vertexPositionIndices.push(Number(polylistIndices[i + offsets.vertex]))
       vertexNormalIndices.push(Number(polylistIndices[i + offsets.normal]))
+      vertexTangentIndices.push(Number(polylistIndices[i + offsets.textangent]))
+      vertexBitangentIndices.push(Number(polylistIndices[i + offsets.texbinormal]))
       vertexUVIndices.push(Number(polylistIndices[i + offsets.texcoord]))
     }
 
-    var vertexPositions = source[0].float_array[0]._.split(' ').map(Number)
-    var vertexNormals = source[1].float_array[0]._.split(' ').map(Number)
+    vertexPropertyBuffers = {}
+    source.forEach( (d) => { vertexPropertyBuffers[d.$.id.split('-').pop()] = d.float_array[0]._.split(' ').map(Number); });
+
+    var vertexPositions = vertexPropertyBuffers["positions"];
+    var vertexNormals = vertexPropertyBuffers["normals"];
+    var vertexTangents = vertexPropertyBuffers["tangents"];
+    var vertexBitangents = vertexPropertyBuffers["bitangents"];
     var vertexUVs = []
-    // TODO: use input, semantics, source, offset, etc
-    if (source[2]) {
-      vertexUVs = source[2].float_array[0]._.split(' ').map(Number)
+    //texcoord set 0;
+    if ( vertexPropertyBuffers["0"] )  {
+      vertexUVs = vertexPropertyBuffers["0"];
     }
-    /* End Vertex Positions, UVs, Normals */
 
     outGeometries.push ({
       id: library_geometry.$.id,
       material: library_geometry.mesh[0].triangles[0].$.material,
       vertexPositions: vertexPositions,
       vertexNormals: vertexNormals,
+      vertexTangents: vertexTangents,
+      vertexBitangents: vertexBitangents,
       vertexUVs: vertexUVs,
       vertexNormalIndices: vertexNormalIndices,
       vertexPositionIndices: vertexPositionIndices,
+      vertexTangentIndices: vertexTangentIndices,
+      vertexBitangentIndices: vertexBitangentIndices,
       vertexUVIndices: vertexUVIndices
     })
   })
