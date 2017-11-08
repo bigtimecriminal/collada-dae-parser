@@ -58,7 +58,7 @@ function ParseLibraryGeometries (library_geometries) {
     }
 
     vertexPropertyBuffers = {}
-    source.forEach( (d) => { vertexPropertyBuffers[d.$.id.split('-').pop()] = d.float_array[0]._.split(' ').map(Number); });
+    source.forEach( function (d) { vertexPropertyBuffers[d.$.id.split('-').pop()] = d.float_array[0]._.split(' ').map(Number); });
 
     var vertexPositions = vertexPropertyBuffers["positions"];
     var vertexNormals = vertexPropertyBuffers["normals"];
