@@ -18,8 +18,6 @@ function ParseCollada (colladaXML) {
   var result = compactXML({}, xmlparser(colladaXML.toString()).root)
   result = { COLLADA: result.COLLADA[0] }
 
-  console.log(result);
-
   var parsedObject = {}
   var parsedLibraryGeometries = parseLibraryGeometries(result.COLLADA.library_geometries)
 
