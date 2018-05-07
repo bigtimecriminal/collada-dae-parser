@@ -19,20 +19,17 @@ function ParseCollada (colladaXML) {
   result = { COLLADA: result.COLLADA[0] }
 
   var parser = new DOMParser();
-  var colladaDOM = parser.parseFromString(colladaXML, "text/xml");
-  window.colladaDOM = colladaDOM;
-  console.log(colladaDOM);
+  colladaXML = parser.parseFromString(colladaXML, "text/xml");
+  window.colladaXML = colladaXML;
+  console.log(colladaXML);
 
   function nsResolver(prefix) { return "http://www.collada.org/2005/11/COLLADASchema"; };
-  var libImages = colladaDOM.evaluate('//dae:COLLADA', colladaDOM, nsResolver, XPathResult.ANY_TYPE, null ); libImages.iterateNext();
-  console.log("libImages");
-  console.log(libImages);
-
-
+  var daeIterator = colladaXML.evaluate('/COLLADA/library_geometries', colladaXML, nsResolver, XPathResult.ANY_TYPE, null );
+  var geometriesLib = daeIterator.iterateNext();
+  console.log(geometriesLib);
 
   var parsedObject = {}
-  var parsedLibraryGeometries = parseLibraryGeometries(result.COLLADA.library_geometries)
-
+  var parsedLibraryGeometries = parseLibraryGeometries(result.COLLADA.library_geometries, colladaXML)
   var visualSceneData = parseLibraryVisualScenes(result.COLLADA.library_visual_scenes)
   var materialsData = parseLibraryMaterials(result.COLLADA.library_materials)
   var effectsData = parseLibraryEffects(result.COLLADA.library_effects)

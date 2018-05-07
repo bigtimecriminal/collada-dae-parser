@@ -1,10 +1,21 @@
 module.exports = ParseLibraryGeometries
 
-function ParseLibraryGeometries (library_geometries) {
+function ParseLibraryGeometries (library_geometries, xmlDae) {
   
   var outGeometries = []
   var internalGeometries = []
   var inGeometries = library_geometries[0].geometry
+
+  var geomNames = []
+  var daeIterator = colladaXML.evaluate('/COLLADA/library_geometries/geometry', colladaXML, null, XPathResult.ANY_TYPE, null );
+  var geomElement = daeIterator.iterateNext();  
+  while (geomElement) {
+    geomNames.push(geomElement.getAttribute('id'));
+    geomElement = daeIterator.iterateNext();  
+  }
+  console.log(geomNames);
+
+
   
   // split multiple connectivity lists into multiple geometries
   inGeometries.forEach(function (library_geometry) {
@@ -26,7 +37,7 @@ function ParseLibraryGeometries (library_geometries) {
     })
   })
 
-  internalGeometries.forEach(function (library_geometry) {
+  internalGeometries.forEach(function (library_geometry, i) {
     var geometryMesh = library_geometry.mesh[0]
     var source = geometryMesh.source
 
@@ -35,11 +46,22 @@ function ParseLibraryGeometries (library_geometries) {
     // Get index list offsets for vertex data - vertex, normal, texcoord
     var offsets = {}
     var maxOffset = 0
-    indexList[0].input.forEach(function (input) {
-      var offset = parseInt(input.$.offset)
-      offsets[input.$.semantic.toLowerCase()] = offset
+    
+    console.log(geomNames);
+    var daeIterator = colladaXML.evaluate('/COLLADA/library_geometries/*[@id="'+geomNames[i]+'"]/mesh/triangles/input', colladaXML, null, XPathResult.ANY_TYPE, null );
+    var daeInput = daeIterator.iterateNext();
+    while (daeInput) {
+      var offset = parseInt(daeInput.getAttribute('offset'))
+      offsets[daeInput.getAttribute('semantic').toLowerCase()] = offset
       maxOffset = Math.max(maxOffset, offset)
-    })
+      daeInput = daeIterator.iterateNext();
+    }
+
+//    indexList[0].input.forEach(function (input) {
+//      var offset = parseInt(input.$.offset)
+//      offsets[input.$.semantic.toLowerCase()] = offset
+//      maxOffset = Math.max(maxOffset, offset)
+//    })
 
     /* Vertex Positions, UVs, Normals */
     var polylistIndices = indexList[0].p[0].trim().split(' ')
@@ -84,6 +106,8 @@ function ParseLibraryGeometries (library_geometries) {
       vertexBitangentIndices: vertexBitangentIndices,
       vertexUVIndices: vertexUVIndices
     })
+
+   i++;
   })
 
   return outGeometries
