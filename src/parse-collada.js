@@ -18,6 +18,18 @@ function ParseCollada (colladaXML) {
   var result = compactXML({}, xmlparser(colladaXML.toString()).root)
   result = { COLLADA: result.COLLADA[0] }
 
+  var parser = new DOMParser();
+  var colladaDOM = parser.parseFromString(colladaXML, "text/xml");
+  window.colladaDOM = colladaDOM;
+  console.log(colladaDOM);
+
+  function nsResolver(prefix) { return "http://www.collada.org/2005/11/COLLADASchema"; };
+  var libImages = colladaDOM.evaluate('//dae:COLLADA', colladaDOM, nsResolver, XPathResult.ANY_TYPE, null ); libImages.iterateNext();
+  console.log("libImages");
+  console.log(libImages);
+
+
+
   var parsedObject = {}
   var parsedLibraryGeometries = parseLibraryGeometries(result.COLLADA.library_geometries)
 
