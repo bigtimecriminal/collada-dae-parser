@@ -1,7 +1,7 @@
 module.exports = ParseVisualScenes
 
 // TODO: Handle child joints. Maybe depth first traversal?
-function ParseVisualScenes (library_visual_scenes) {
+function ParseVisualScenes (library_visual_scenes, colladaXML) {
   var visualScene = library_visual_scenes[0].visual_scene[0]
   var parsedJoints = {}
 

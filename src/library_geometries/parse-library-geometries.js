@@ -13,7 +13,6 @@ function ParseLibraryGeometries (library_geometries, xmlDae) {
     geomNames.push(geomElement.getAttribute('id'));
     geomElement = daeIterator.iterateNext();  
   }
-  console.log(geomNames);
   
   // TODO: Bring this back when more comfortable with XML
   // split multiple connectivity lists into multiple geometries
@@ -69,7 +68,6 @@ function ParseLibraryGeometries (library_geometries, xmlDae) {
     vertexPropertyBuffers = {}
     var daeIterator = colladaXML.evaluate('/COLLADA/library_geometries/*[@id="'+geomName+'"]/mesh/source', colladaXML, null, XPathResult.ANY, null ); 
     var daeElement = daeIterator.iterateNext();
-    console.log(daeElement);
     while (daeElement) {
       var id = daeElement.getAttribute('id').split('-').pop();
       var value = daeElement.firstElementChild.innerHTML.trim().split(' ').map(Number);

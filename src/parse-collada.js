@@ -21,17 +21,17 @@ function ParseCollada (colladaXML) {
   var parser = new DOMParser();
   colladaXML = parser.parseFromString(colladaXML, "text/xml");
   window.colladaXML = colladaXML;
+  console.log(result);
   console.log(colladaXML);
 
-  function nsResolver(prefix) { return "http://www.collada.org/2005/11/COLLADASchema"; };
-  var daeIterator = colladaXML.evaluate('/COLLADA/library_geometries', colladaXML, nsResolver, XPathResult.ANY_TYPE, null );
-  var geometriesLib = daeIterator.iterateNext();
-  console.log(geometriesLib);
+//  function nsResolver(prefix) { return "http://www.collada.org/2005/11/COLLADASchema"; };
+//  var daeIterator = colladaXML.evaluate('/COLLADA/library_geometries', colladaXML, nsResolver, XPathResult.ANY_TYPE, null );
+//  var geometriesLib = daeIterator.iterateNext();
 
   var parsedObject = {}
   var parsedLibraryGeometries = parseLibraryGeometries(result.COLLADA.library_geometries, colladaXML)
-  var visualSceneData = parseLibraryVisualScenes(result.COLLADA.library_visual_scenes)
-  var materialsData = parseLibraryMaterials(result.COLLADA.library_materials)
+  var visualSceneData = parseLibraryVisualScenes(result.COLLADA.library_visual_scenes, colladaXML)
+  var materialsData = parseLibraryMaterials(result.COLLADA.library_materials, colladaXML)
   var effectsData = parseLibraryEffects(result.COLLADA.library_effects)
   var imagesData = parseLibraryImages(result.COLLADA.library_images)
 
@@ -75,6 +75,8 @@ function ParseCollada (colladaXML) {
       parsedObject.keyframes = keyframes
     }
   }
+
+  console.log(visualSceneData.nodes);
 
   parsedObject.geometries = []
   parsedObject.nodes = visualSceneData.nodes
