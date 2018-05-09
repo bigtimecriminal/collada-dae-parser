@@ -1,23 +1,41 @@
 module.exports = ParseLibraryEffects
-function ParseLibraryEffects (library_effects) {
+function ParseLibraryEffects (library_effects, colladaXML) {
     var outEffects = {}
 
     textureIdReferences = {};
     effectIdToBlinnProperties = {};
 
-    library_effects[0].effect.forEach( function(d) {
+    var effectIds = []
+    var daeIterator = colladaXML.evaluate('/COLLADA/library_effects/effect', colladaXML, null, XPathResult.ANY_TYPE, null );
+    var daeElement = daeIterator.iterateNext();  
+    while (daeElement) {
+      effectIds.push(daeElement.getAttribute('id'));
+      daeElement = daeIterator.iterateNext();  
+    }
+    console.log(effectIds);
+
+    library_effects[0].effect.forEach( function(d, i) {
 
         textureIdReferences[d.$.id] = {}
 
         //bump texture finding
-        var bumpTechnique = d.profile_COMMON[0].technique[0].extra[0].technique.find( function(d) { return "bump" in d });
+//        var bumpTechnique = d.profile_COMMON[0].technique[0].extra[0].technique.find( function(d) { return "bump" in d });
+//        if (bumpTechnique) {
+//            var bumpTextureId = bumpTechnique.bump[0].texture[0].$.texture;
+//            var bumpEffect = d.profile_COMMON[0].newparam.find( function (d) { return (d.$.sid === bumpTextureId); });
+//            var bumpSurfaceId = bumpEffect["sampler2D"][0].source[0]
+//            var = d.profile_COMMON[0].newparam.find( function (d) { return (d.$.sid === bumpSurfaceId); });
+//            textureIdReferences[d.$.id]["bump"] = bumpSurface.surface[0].init_from[0]
+//        }
+        var bumpTechnique = colladaXML.evaluate('/COLLADA/library_effects/effect[@id="'+effectIds[i]+'"]/profile_COMMON/technique/extra/technique[1]/bump', colladaXML, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null ).singleNodeValue
         if (bumpTechnique) {
-            var bumpTextureId = bumpTechnique.bump[0].texture[0].$.texture;
-            var bumpEffect = d.profile_COMMON[0].newparam.find( function (d) { return (d.$.sid === bumpTextureId); });
-            var bumpSurfaceId = bumpEffect["sampler2D"][0].source[0]
-            var bumpSurface = d.profile_COMMON[0].newparam.find( function (d) { return (d.$.sid === bumpSurfaceId); });
-            textureIdReferences[d.$.id]["bump"] = bumpSurface.surface[0].init_from[0]
+            var bumpTextureId = bumpTechnique.firstElementChild.getAttribute('texture');
+            var bumpEffect = colladaXML.evaluate('/COLLADA/library_effects/effect[@id="'+effectIds[i]+'"]/profile_COMMON/newparam[@sid="'+bumpTextureId+'"]' , colladaXML, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null ).singleNodeValue;
+            var bumpSurfaceId = bumpEffect.firstElementChild.firstElementChild.innerHTML;
+            var bumpSurface = colladaXML.evaluate('/COLLADA/library_effects/effect[@id="'+effectIds[i]+'"]/profile_COMMON/newparam[@sid="'+bumpSurfaceId+'"]' , colladaXML, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null ).singleNodeValue;
+            textureIdReferences[d.$.id]["bump"] = bumpSurface.firstElementChild.firstElementChild.innerHTML;
         }
+        
 
         //spec texture finding
         if(d.profile_COMMON[0].technique[0].blinn[0]["specular"][0]["texture"])
