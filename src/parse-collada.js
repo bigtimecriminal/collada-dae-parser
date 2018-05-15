@@ -51,32 +51,31 @@ function ParseCollada (colladaXML) {
 
   var jointInverseBindPoses
   var controllerData
-  if (result.COLLADA.library_controllers) {
-    controllerData = parseLibraryControllers(result.COLLADA.library_controllers)
-    if (controllerData.vertexJointWeights && Object.keys(controllerData.vertexJointWeights).length > 0) {
-      parsedObject.vertexJointWeights = controllerData.vertexJointWeights
-      parsedObject.jointNamePositionIndex = controllerData.jointNamePositionIndex
-      parsedObject.jointInverseBindPoses = controllerData.jointInverseBindPoses
-      jointInverseBindPoses = controllerData.jointInverseBindPoses
-
-      // The parser only supports deformation bones. Control bones' affects must be baked in before exporting
-      validateNoControlBones(Object.keys(visualSceneData.jointParents), Object.keys(jointInverseBindPoses))
-    }
-  }
-
-  // TODO: Also parse interpolation/intangent/outtangent
-  if (result.COLLADA.library_animations) {
-    parsedObject.keyframes = parseLocRotScaleAnim(result.COLLADA.library_animations[0].animation)
-    if (Object.keys(parsedObject.keyframes).length === 0) {
-      delete parsedObject.keyframes
-    }
-    var keyframes = parseSkeletalAnimations(result.COLLADA.library_animations, jointInverseBindPoses, visualSceneData, controllerData.jointNamePositionIndex)
-    if (Object.keys(keyframes).length > 0) {
-      parsedObject.keyframes = keyframes
-    }
-  }
-
-  console.log(visualSceneData.nodes);
+// commented out until model can be tested
+//  if (result.COLLADA.library_controllers) {
+//    controllerData = parseLibraryControllers(result.COLLADA.library_controllers)
+//    if (controllerData.vertexJointWeights && Object.keys(controllerData.vertexJointWeights).length > 0) {
+//      parsedObject.vertexJointWeights = controllerData.vertexJointWeights
+//      parsedObject.jointNamePositionIndex = controllerData.jointNamePositionIndex
+//      parsedObject.jointInverseBindPoses = controllerData.jointInverseBindPoses
+//      jointInverseBindPoses = controllerData.jointInverseBindPoses
+//
+//      // The parser only supports deformation bones. Control bones' affects must be baked in before exporting
+//      validateNoControlBones(Object.keys(visualSceneData.jointParents), Object.keys(jointInverseBindPoses))
+//    }
+//  }
+//
+//  // TODO: Also parse interpolation/intangent/outtangent
+//  if (result.COLLADA.library_animations) {
+//    parsedObject.keyframes = parseLocRotScaleAnim(result.COLLADA.library_animations[0].animation)
+//    if (Object.keys(parsedObject.keyframes).length === 0) {
+//      delete parsedObject.keyframes
+//    }
+//    var keyframes = parseSkeletalAnimations(result.COLLADA.library_animations, jointInverseBindPoses, visualSceneData, controllerData.jointNamePositionIndex)
+//    if (Object.keys(keyframes).length > 0) {
+//      parsedObject.keyframes = keyframes
+//    }
+//  }
 
   parsedObject.geometries = []
   parsedObject.nodes = visualSceneData.nodes
