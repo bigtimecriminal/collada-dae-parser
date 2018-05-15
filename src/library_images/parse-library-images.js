@@ -1,12 +1,16 @@
 module.exports = ParseLibraryImages
 function ParseLibraryImages (library_images) {
-    var outImages = {}
+    var outImages = {
+      imageNameReferences: {
+      }
+    }
 
-    imageNameReferences = {};
-    library_images[0].image.forEach(function (d) {
-        imageNameReferences[d.$.id] = d.init_from[0]
-    })
-    outImages.imageNameReferences = imageNameReferences;
+    var daeIterator = colladaXML.evaluate('/COLLADA/library_images/image', colladaXML, null, XPathResult.ANY_TYPE, null );
+    var daeElement = daeIterator.iterateNext();  
+    while (daeElement) {
+      outImages.imageNameReferences[daeElement.getAttribute('id')] = daeElement.firstElementChild.innerHTML;
+      daeElement = daeIterator.iterateNext();  
+    }
 
     return outImages;
 }
