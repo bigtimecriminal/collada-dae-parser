@@ -33,7 +33,7 @@ function ParseCollada (colladaXML) {
   var visualSceneData = parseLibraryVisualScenes(result.COLLADA.library_visual_scenes, colladaXML)
   var materialsData = parseLibraryMaterials(result.COLLADA.library_materials, colladaXML)
   var effectsData = parseLibraryEffects(result.COLLADA.library_effects, colladaXML)
-  var imagesData = parseLibraryImages(result.COLLADA.library_images)
+  var imagesData = parseLibraryImages(result.COLLADA.library_images, colladaXML)
 
   // The joint parents aren't actually joint parents so we get the joint parents..
   // This lib needs a refactor indeed
