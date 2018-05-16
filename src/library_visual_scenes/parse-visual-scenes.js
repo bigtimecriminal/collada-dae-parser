@@ -36,7 +36,7 @@ function ParseVisualScenes (library_visual_scenes, colladaXML) {
 
     var node = {}
     node.id = daeElement.getAttribute("id")
-    node.parent = daeElement.parentElem ? daeElement.parentElem.getAttribute("id") : null
+    node.parent = daeElement.parentElement ? daeElement.parentElement.getAttribute("id") : null
     node.matrix = daeElement.getElementsByTagName('matrix')[0].innerHTML.trim().split(' ').map(parseFloat)
     node.geometry = daeElement.getElementsByTagName('instance_geometry')[0].getAttribute('url').slice(1);
     node.materialNameReferences = {}
