@@ -38,19 +38,19 @@ function ParseCollada (colladaXML) {
   // The joint parents aren't actually joint parents so we get the joint parents..
   // This lib needs a refactor indeed
   // jointParents = {childBone: 'parentBone', anotherChild: 'anotherParent'}
-  var jointParents
-  if (Object.keys(visualSceneData.jointParents).length) {
-    jointParents = Object.keys(visualSceneData.jointParents)
-    .reduce(function (jointParents, jointName) {
-      // JSON.stringify {foo: undefined} = {}, os we replace undefined with null
-      // to make sure that we don't lose any keys
-      jointParents[jointName] = visualSceneData.jointParents[jointName].parent || null
-      return jointParents
-    }, {})
-  }
-
-  var jointInverseBindPoses
-  var controllerData
+//  var jointParents
+//  if (Object.keys(visualSceneData.jointParents).length) {
+//    jointParents = Object.keys(visualSceneData.jointParents)
+//    .reduce(function (jointParents, jointName) {
+//      // JSON.stringify {foo: undefined} = {}, os we replace undefined with null
+//      // to make sure that we don't lose any keys
+//      jointParents[jointName] = visualSceneData.jointParents[jointName].parent || null
+//      return jointParents
+//    }, {})
+//  }
+//
+//  var jointInverseBindPoses
+//  var controllerData
 // commented out until model can be tested
 //  if (result.COLLADA.library_controllers) {
 //    controllerData = parseLibraryControllers(result.COLLADA.library_controllers)
@@ -79,14 +79,17 @@ function ParseCollada (colladaXML) {
 
   parsedObject.geometries = []
   parsedObject.nodes = visualSceneData.nodes
+  parsedObject.newNodes = visualSceneData.newNodes
+
+  console.log(parsedObject.newNodes);
 
   // Return our parsed collada object
-  if (controllerData && controllerData.armatureName) {
-    parsedObject.armatureName = controllerData.armatureName
-  }
-  if (jointParents) {
-    parsedObject.jointParents = jointParents
-  }
+//  if (controllerData && controllerData.armatureName) {
+//    parsedObject.armatureName = controllerData.armatureName
+//  }
+//  if (jointParents) {
+//    parsedObject.jointParents = jointParents
+//  }
 
   //ANTON TODO: fix this so that it transfers the entire structure
   parsedLibraryGeometries.forEach( function(parsedLibraryGeometry) {

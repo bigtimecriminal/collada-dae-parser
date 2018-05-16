@@ -23,13 +23,42 @@ function ParseVisualScenes (library_visual_scenes, colladaXML) {
     }
     */
   })
+  
+  nodes = [];
+  var daeIterator = colladaXML.evaluate('/COLLADA/library_visual_scenes/visual_scene//node', colladaXML, null, XPathResult.ANY_TYPE, null );
+  var daeElement = daeIterator.iterateNext();  
+  while (daeElement) {
+    if(daeElement.getElementsByTagName('instance_geometry').length === 0)
+    {
+      var daeElement = daeIterator.iterateNext();  
+      continue;
+    }
+
+    var node = {}
+    node.id = daeElement.getAttribute("id")
+    node.parent = daeElement.parentElem ? daeElement.parentElem.getAttribute("id") : null
+    node.matrix = daeElement.getElementsByTagName('matrix')[0].innerHTML.trim().split(' ').map(parseFloat)
+    node.geometry = daeElement.getElementsByTagName('instance_geometry')[0].getAttribute('url').slice(1);
+    node.materialNameReferences = {}
+
+    Array.from(daeElement.getElementsByTagName('instance_material')).forEach( (d) => {
+     node.materialNameReferences[d.getAttribute('symbol')] = d.getAttribute('target').slice(1)
+    });
+
+ //   console.log(node);
+
+    nodes.push(node);
+    var daeElement = daeIterator.iterateNext();  
+  }
 
   return {
-    jointParents: parsedJoints,
+//    jointParents: parsedJoints,
     armatureScale: armatureScale,
     nodes: visualScene.node,
+    newNodes: nodes
   }
 }
+
 
 // Recursively parse child joints
 function parseJoints (node, parentJointName, accumulator) {

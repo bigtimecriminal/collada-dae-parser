@@ -1,6 +1,6 @@
 module.exports = ParseLibraryGeometries
 
-function ParseLibraryGeometries (library_geometries, xmlDae) {
+function ParseLibraryGeometries (xmlDae) {
   
   var outGeometries = []
 //  var internalGeometries = []
