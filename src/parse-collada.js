@@ -15,13 +15,13 @@ module.exports = ParseCollada
 // Use input, accessor, and param attributes instead of hard coding lookups
 // Clean Up Code / less confusing var names
 function ParseCollada (colladaXML) {
-  var result = compactXML({}, xmlparser(colladaXML.toString()).root)
-  result = { COLLADA: result.COLLADA[0] }
+//  var result = compactXML({}, xmlparser(colladaXML.toString()).root)
+//  result = { COLLADA: result.COLLADA[0] }
 
   var parser = new DOMParser();
   colladaXML = parser.parseFromString(colladaXML, "text/xml");
   window.colladaXML = colladaXML;
-  console.log(result);
+//  console.log(result);
   console.log(colladaXML);
 
 //  function nsResolver(prefix) { return "http://www.collada.org/2005/11/COLLADASchema"; };
@@ -29,11 +29,11 @@ function ParseCollada (colladaXML) {
 //  var geometriesLib = daeIterator.iterateNext();
 
   var parsedObject = {}
-  var parsedLibraryGeometries = parseLibraryGeometries(result.COLLADA.library_geometries, colladaXML)
-  var visualSceneData = parseLibraryVisualScenes(result.COLLADA.library_visual_scenes, colladaXML)
-  var materialsData = parseLibraryMaterials(result.COLLADA.library_materials, colladaXML)
-  var effectsData = parseLibraryEffects(result.COLLADA.library_effects, colladaXML)
-  var imagesData = parseLibraryImages(result.COLLADA.library_images, colladaXML)
+  var parsedLibraryGeometries = parseLibraryGeometries(null, colladaXML)
+  var visualSceneData = parseLibraryVisualScenes(null, colladaXML)
+  var materialsData = parseLibraryMaterials(null, colladaXML)
+  var effectsData = parseLibraryEffects(null, colladaXML)
+  var imagesData = parseLibraryImages(null, colladaXML)
 
   // The joint parents aren't actually joint parents so we get the joint parents..
   // This lib needs a refactor indeed
