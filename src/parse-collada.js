@@ -79,9 +79,6 @@ function ParseCollada (colladaXML) {
 
   parsedObject.geometries = []
   parsedObject.nodes = visualSceneData.nodes
-  parsedObject.newNodes = visualSceneData.newNodes
-
-  console.log(parsedObject.newNodes);
 
   // Return our parsed collada object
 //  if (controllerData && controllerData.armatureName) {
