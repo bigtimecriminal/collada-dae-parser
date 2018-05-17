@@ -10,7 +10,10 @@ function ParseLibraryGeometries (xmlDae) {
   var daeIterator = colladaXML.evaluate('/COLLADA/library_geometries/geometry', colladaXML, null, XPathResult.ANY_TYPE, null );
   var geomElement = daeIterator.iterateNext();  
   while (geomElement) {
-    geomNames.push(geomElement.getAttribute('id'));
+    if (geomElement.getElementsByTagName('triangles').length > 0)
+    {
+      geomNames.push(geomElement.getAttribute('id'));
+    }
     geomElement = daeIterator.iterateNext();  
   }
   
@@ -34,6 +37,7 @@ function ParseLibraryGeometries (xmlDae) {
 //      internalGeometries.push(newGeometry)
 //    })
 //  })
+//
 
   geomNames.forEach(function (geomName) {
     // Get index list offsets for vertex data - vertex, normal, texcoord
