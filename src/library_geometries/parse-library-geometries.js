@@ -1,6 +1,6 @@
 module.exports = ParseLibraryGeometries
 
-function ParseLibraryGeometries (xmlDae) {
+function ParseLibraryGeometries (library_geometries, colladaXML) {
   
   var outGeometries = []
 //  var internalGeometries = []
@@ -96,8 +96,6 @@ function ParseLibraryGeometries (xmlDae) {
     })
 
   })
-
-  console.log(outGeometries);
 
   return outGeometries
 }

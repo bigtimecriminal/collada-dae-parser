@@ -1,5 +1,5 @@
 module.exports = ParseLibraryImages
-function ParseLibraryImages (library_images) {
+function ParseLibraryImages (library_images, colladaXML) {
     var outImages = {
       imageNameReferences: {
       }

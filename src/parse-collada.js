@@ -20,9 +20,6 @@ function ParseCollada (colladaXML) {
 
   var parser = new DOMParser();
   colladaXML = parser.parseFromString(colladaXML, "text/xml");
-  window.colladaXML = colladaXML;
-//  console.log(result);
-  console.log(colladaXML);
 
 //  function nsResolver(prefix) { return "http://www.collada.org/2005/11/COLLADASchema"; };
 //  var daeIterator = colladaXML.evaluate('/COLLADA/library_geometries', colladaXML, nsResolver, XPathResult.ANY_TYPE, null );
@@ -94,7 +91,7 @@ function ParseCollada (colladaXML) {
     parsedGeometry.id = parsedLibraryGeometry.id
     parsedGeometry.material = parsedLibraryGeometry.material
     parsedGeometry.vertexNormals = parsedLibraryGeometry.vertexNormals
-    parsedGeometry.vertexPositionIndices = parsedLibraryGeometry.meshConnectivityLists[0]
+    parsedGeometry.meshConnectivityLists = parsedLibraryGeometry.meshConnectivityLists
     parsedGeometry.vertexPositions = parsedLibraryGeometry.vertexPositions
     parsedGeometry.vertexTangents = parsedLibraryGeometry.vertexTangents
     parsedGeometry.vertexBitangents = parsedLibraryGeometry.vertexBitangents
