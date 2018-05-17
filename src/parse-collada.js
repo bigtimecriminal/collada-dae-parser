@@ -93,16 +93,12 @@ function ParseCollada (colladaXML) {
     var parsedGeometry = {}
     parsedGeometry.id = parsedLibraryGeometry.id
     parsedGeometry.material = parsedLibraryGeometry.material
-    parsedGeometry.vertexNormalIndices = parsedLibraryGeometry.vertexNormalIndices
     parsedGeometry.vertexNormals = parsedLibraryGeometry.vertexNormals
-    parsedGeometry.vertexPositionIndices = parsedLibraryGeometry.vertexPositionIndices
+    parsedGeometry.vertexPositionIndices = parsedLibraryGeometry.meshConnectivityLists[0]
     parsedGeometry.vertexPositions = parsedLibraryGeometry.vertexPositions
-    parsedGeometry.vertexTangentIndices = parsedLibraryGeometry.vertexTangentIndices
     parsedGeometry.vertexTangents = parsedLibraryGeometry.vertexTangents
-    parsedGeometry.vertexBitangentIndices = parsedLibraryGeometry.vertexBitangentIndices
     parsedGeometry.vertexBitangents = parsedLibraryGeometry.vertexBitangents
     if (parsedLibraryGeometry.vertexUVs.length > 0) {
-      parsedGeometry.vertexUVIndices = parsedLibraryGeometry.vertexUVIndices
       parsedGeometry.vertexUVs = parsedLibraryGeometry.vertexUVs
     }
     parsedObject.geometries.push(parsedGeometry);

@@ -40,33 +40,27 @@ function ParseLibraryGeometries (xmlDae) {
 //
 
   geomNames.forEach(function (geomName) {
+    // I don't think this is a thing anymore - anton
     // Get index list offsets for vertex data - vertex, normal, texcoord
-    var offsets = {}
-    var maxOffset = 0
-    
-    var daeIterator = colladaXML.evaluate('/COLLADA/library_geometries/*[@id="'+geomName+'"]/mesh/triangles/input', colladaXML, null, XPathResult.ANY_TYPE, null );
-    var daeInput = daeIterator.iterateNext();
-    while (daeInput) {
-      var offset = parseInt(daeInput.getAttribute('offset'))
-      offsets[daeInput.getAttribute('semantic').toLowerCase()] = offset
-      maxOffset = Math.max(maxOffset, offset)
-      daeInput = daeIterator.iterateNext();
-    }
+//    var offsets = {}
+//    var maxOffset = 0
+//    
+//    var daeIterator = colladaXML.evaluate('/COLLADA/library_geometries/*[@id="'+geomName+'"]/mesh/triangles/input', colladaXML, null, XPathResult.ANY_TYPE, null );
+//    var daeInput = daeIterator.iterateNext();
+//    while (daeInput) {
+//      var offset = parseInt(daeInput.getAttribute('offset'))
+//      offsets[daeInput.getAttribute('semantic').toLowerCase()] = offset
+//      maxOffset = Math.max(maxOffset, offset)
+//      daeInput = daeIterator.iterateNext();
+//    }
 
     /* Vertex Positions, UVs, Normals */
-    var polylistIndices = colladaXML.evaluate('/COLLADA/library_geometries/*[@id="'+geomName+'"]/mesh/triangles/p', colladaXML, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null ).singleNodeValue.innerHTML.trim().split(' ');
-
-    var vertexNormalIndices = []
-    var vertexPositionIndices = []
-    var vertexTangentIndices = []
-    var vertexBitangentIndices = []
-    var vertexUVIndices = []
-    for (var i = 0; i < polylistIndices.length; i += 1 + maxOffset) {
-      vertexPositionIndices.push(Number(polylistIndices[i + offsets.vertex]))
-      vertexNormalIndices.push(Number(polylistIndices[i + offsets.normal]))
-      vertexTangentIndices.push(Number(polylistIndices[i + offsets.textangent]))
-      vertexBitangentIndices.push(Number(polylistIndices[i + offsets.texbinormal]))
-      vertexUVIndices.push(Number(polylistIndices[i + offsets.texcoord]))
+    var meshConnectivityLists = []
+    var daeIterator = colladaXML.evaluate('/COLLADA/library_geometries/*[@id="'+geomName+'"]/mesh/triangles', colladaXML, null, XPathResult.ANY_TYPE, null )
+    var daeElement = daeIterator.iterateNext();
+    while (daeElement) {
+      meshConnectivityLists.push(daeElement.getElementsByTagName('p')[0].innerHTML.trim().split(' ').map(function (d) { return parseInt(d);}));
+      var daeElement = daeIterator.iterateNext();
     }
 
     vertexPropertyBuffers = {}
@@ -98,15 +92,12 @@ function ParseLibraryGeometries (xmlDae) {
       vertexTangents: vertexTangents,
       vertexBitangents: vertexBitangents,
       vertexUVs: vertexUVs,
-      vertexNormalIndices: vertexNormalIndices,
-      vertexPositionIndices: vertexPositionIndices,
-      vertexTangentIndices: vertexTangentIndices,
-      vertexBitangentIndices: vertexBitangentIndices,
-      vertexUVIndices: vertexUVIndices
+      meshConnectivityLists: meshConnectivityLists
     })
 
-   i++;
   })
+
+  console.log(outGeometries);
 
   return outGeometries
 }
