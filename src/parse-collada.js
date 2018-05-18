@@ -89,7 +89,7 @@ function ParseCollada (colladaXML) {
   parsedLibraryGeometries.forEach( function(parsedLibraryGeometry) {
     var parsedGeometry = {}
     parsedGeometry.id = parsedLibraryGeometry.id
-    parsedGeometry.material = parsedLibraryGeometry.material
+    parsedGeometry.materials = parsedLibraryGeometry.materials
     parsedGeometry.vertexNormals = parsedLibraryGeometry.vertexNormals
     parsedGeometry.meshConnectivityLists = parsedLibraryGeometry.meshConnectivityLists
     parsedGeometry.vertexPositions = parsedLibraryGeometry.vertexPositions
@@ -106,7 +106,7 @@ function ParseCollada (colladaXML) {
   parsedObject.effectIdToBlinnProperties = effectsData.effectIdToBlinnProperties;
   parsedObject.imageNameReferences = imagesData.imageNameReferences;
 
-  return parsedObject
+  return parsedObject;
 }
 
 /**

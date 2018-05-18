@@ -56,10 +56,16 @@ function ParseLibraryGeometries (library_geometries, colladaXML) {
 
     /* Vertex Positions, UVs, Normals */
     var meshConnectivityLists = []
+    var materials = []
     var daeIterator = colladaXML.evaluate('/d:COLLADA/d:library_geometries/d:*[@id="'+geomName+'"]/d:mesh/d:triangles', colladaXML, nsResolver, XPathResult.ANY_TYPE, null )
     var daeElement = daeIterator.iterateNext();
     while (daeElement) {
       meshConnectivityLists.push(daeElement.getElementsByTagName('p')[0].innerHTML.trim().split(' ').map(function (d) { return parseInt(d);}));
+      var material = daeElement.getAttribute("material");
+      if (material)
+      {
+        materials.push(material);
+      }
       var daeElement = daeIterator.iterateNext();
     }
 
@@ -86,7 +92,7 @@ function ParseLibraryGeometries (library_geometries, colladaXML) {
 
     outGeometries.push ({
       id: geomName,
-      material: colladaXML.evaluate('/d:COLLADA/d:library_geometries/d:*[@id="'+geomName+'"]/d:mesh/d:triangles', colladaXML, nsResolver, XPathResult.FIRST_ORDERED_NODE_TYPE, null ).singleNodeValue.getAttribute('material'),
+      materials: materials,
       vertexPositions: vertexPositions,
       vertexNormals: vertexNormals,
       vertexTangents: vertexTangents,
