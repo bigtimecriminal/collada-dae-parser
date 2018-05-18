@@ -1,4 +1,3 @@
-var xmlparser = require('xml-parser')
 var parseLibraryImages = require('./library_images/parse-library-images.js')
 var parseLibraryMaterials = require('./library_materials/parse-library-materials.js')
 var parseLibraryEffects = require('./library_effects/parse-library-effects.js')
@@ -9,9 +8,9 @@ module.exports = ParseCollada
 
 function ParseCollada (colladaXML) {
   var parser = new DOMParser()
-  colladaXML = parser.parseFromString(colladaXML, "text/xml")
+  colladaXML = parser.parseFromString(colladaXML, 'text/xml')
 
-  nsResolver = function nsResolver(prefix) { return "http://www.collada.org/2005/11/COLLADASchema" }
+  var nsResolver = function nsResolver (prefix) { return 'http://www.collada.org/2005/11/COLLADASchema' }
 
   var parsedObject = {}
   var parsedLibraryGeometries = parseLibraryGeometries(nsResolver, colladaXML)
@@ -23,8 +22,8 @@ function ParseCollada (colladaXML) {
   parsedObject.geometries = []
   parsedObject.nodes = visualSceneData.nodes
 
-  //ANTON TODO: fix this so that it transfers the entire structure
-  parsedLibraryGeometries.forEach( function(parsedLibraryGeometry) {
+  // ANTON TODO: fix this so that it transfers the entire structure
+  parsedLibraryGeometries.forEach(function (parsedLibraryGeometry) {
     var parsedGeometry = {}
     parsedGeometry.id = parsedLibraryGeometry.id
     parsedGeometry.materials = parsedLibraryGeometry.materials
