@@ -1,5 +1,5 @@
 module.exports = ParseLibraryMaterials
-function ParseLibraryMaterials (library_materials, colladaXML) {
+function ParseLibraryMaterials (nsResolver, colladaXML) {
     var outMaterials = {}
     var materialEffectReferences = {}
 

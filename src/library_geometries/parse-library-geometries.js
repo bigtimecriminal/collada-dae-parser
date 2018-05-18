@@ -1,6 +1,6 @@
 module.exports = ParseLibraryGeometries
 
-function ParseLibraryGeometries (library_geometries, colladaXML) {
+function ParseLibraryGeometries (nsResolver, colladaXML) {
   
   var outGeometries = []
 //  var internalGeometries = []

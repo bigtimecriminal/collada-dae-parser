@@ -1,5 +1,5 @@
 module.exports = ParseLibraryEffects
-function ParseLibraryEffects (library_effects, colladaXML) {
+function ParseLibraryEffects (nsResolver, colladaXML) {
     var outEffects = {}
 
     textureIdReferences = {};
