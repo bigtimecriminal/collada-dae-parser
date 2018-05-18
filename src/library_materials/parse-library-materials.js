@@ -3,7 +3,7 @@ function ParseLibraryMaterials (library_materials, colladaXML) {
     var outMaterials = {}
     var materialEffectReferences = {}
 
-    var daeIterator = colladaXML.evaluate('/COLLADA/library_materials/material', colladaXML, null, XPathResult.ANY_TYPE, null );
+    var daeIterator = colladaXML.evaluate('/d:COLLADA/d:library_materials/d:material', colladaXML, nsResolver, XPathResult.ANY_TYPE, null );
     var daeElement = daeIterator.iterateNext();
     while(daeElement) {
       var id = daeElement.getAttribute('id');

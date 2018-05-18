@@ -25,7 +25,7 @@ function ParseVisualScenes (library_visual_scenes, colladaXML) {
 //  })
   
   nodes = [];
-  var daeIterator = colladaXML.evaluate('/COLLADA/library_visual_scenes/visual_scene//node', colladaXML, null, XPathResult.ANY_TYPE, null );
+  var daeIterator = colladaXML.evaluate('/d:COLLADA/d:library_visual_scenes/d:visual_scene//d:node', colladaXML, nsResolver, XPathResult.ANY_TYPE, null );
   var daeElement = daeIterator.iterateNext();  
   while (daeElement) {
     if(daeElement.getElementsByTagName('instance_geometry').length === 0)

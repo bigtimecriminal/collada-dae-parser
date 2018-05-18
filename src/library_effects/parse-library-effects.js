@@ -6,7 +6,7 @@ function ParseLibraryEffects (library_effects, colladaXML) {
     effectIdToBlinnProperties = {};
 
     var effectIds = []
-    var daeIterator = colladaXML.evaluate('/COLLADA/library_effects/effect', colladaXML, null, XPathResult.ANY_TYPE, null );
+    var daeIterator = colladaXML.evaluate('/d:COLLADA/d:library_effects/d:effect', colladaXML, nsResolver, XPathResult.ANY_TYPE, null );
     var daeElement = daeIterator.iterateNext();  
     while (daeElement) {
       effectIds.push(daeElement.getAttribute('id'));
@@ -18,12 +18,12 @@ function ParseLibraryEffects (library_effects, colladaXML) {
         textureIdReferences[effectId] = {}
 
         //bump texture finding
-        var bumpTechnique = colladaXML.evaluate('/COLLADA/library_effects/effect[@id="'+effectId+'"]/profile_COMMON/technique/extra/technique[1]/bump', colladaXML, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null ).singleNodeValue
+        var bumpTechnique = colladaXML.evaluate('/d:COLLADA/d:library_effects/d:effect[@id="'+effectId+'"]/d:profile_COMMON/d:technique/d:extra/d:technique[1]/d:bump', colladaXML, nsResolver, XPathResult.FIRST_ORDERED_NODE_TYPE, null ).singleNodeValue
         if (bumpTechnique) {
             var bumpTextureId = bumpTechnique.firstElementChild.getAttribute('texture');
-            var bumpEffect = colladaXML.evaluate('/COLLADA/library_effects/effect[@id="'+effectId+'"]/profile_COMMON/newparam[@sid="'+bumpTextureId+'"]' , colladaXML, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null ).singleNodeValue;
+            var bumpEffect = colladaXML.evaluate('/d:COLLADA/d:library_effects/d:effect[@id="'+effectId+'"]/d:profile_COMMON/d:newparam[@sid="'+bumpTextureId+'"]' , colladaXML, nsResolver, XPathResult.FIRST_ORDERED_NODE_TYPE, null ).singleNodeValue;
             var bumpSurfaceId = bumpEffect.firstElementChild.firstElementChild.innerHTML;
-            var bumpSurface = colladaXML.evaluate('/COLLADA/library_effects/effect[@id="'+effectId+'"]/profile_COMMON/newparam[@sid="'+bumpSurfaceId+'"]' , colladaXML, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null ).singleNodeValue;
+            var bumpSurface = colladaXML.evaluate('/d:COLLADA/d:library_effects/d:effect[@id="'+effectId+'"]/d:profile_COMMON/d:newparam[@sid="'+bumpSurfaceId+'"]' , colladaXML, nsResolver, XPathResult.FIRST_ORDERED_NODE_TYPE, null ).singleNodeValue;
             textureIdReferences[effectId]["bump"] = bumpSurface.firstElementChild.firstElementChild.innerHTML;
         }
         
@@ -40,39 +40,39 @@ function ParseLibraryEffects (library_effects, colladaXML) {
 //        }
 
         //diffuse texture finding
-        var diffuseTechnique = colladaXML.evaluate('/COLLADA/library_effects/effect[@id="'+effectId+'"]/profile_COMMON/technique/blinn/diffuse', colladaXML, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null ).singleNodeValue
+        var diffuseTechnique = colladaXML.evaluate('/d:COLLADA/d:library_effects/d:effect[@id="'+effectId+'"]/d:profile_COMMON/d:technique/d:blinn/d:diffuse', colladaXML, nsResolver, XPathResult.FIRST_ORDERED_NODE_TYPE, null ).singleNodeValue
         if(diffuseTechnique) {
             var diffuseTextureId = diffuseTechnique.firstElementChild.getAttribute('texture');
             if (diffuseTextureId != null) 
             {
-              var diffuseEffect = colladaXML.evaluate('/COLLADA/library_effects/effect[@id="'+effectId+'"]/profile_COMMON/newparam[@sid="'+diffuseTextureId+'"]' , colladaXML, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null ).singleNodeValue;
+              var diffuseEffect = colladaXML.evaluate('/d:COLLADA/d:library_effects/d:effect[@id="'+effectId+'"]/d:profile_COMMON/d:newparam[@sid="'+diffuseTextureId+'"]' , colladaXML, nsResolver, XPathResult.FIRST_ORDERED_NODE_TYPE, null ).singleNodeValue;
               var diffuseSurfaceId = diffuseEffect.firstElementChild.firstElementChild.innerHTML;
-              var diffuseSurface = colladaXML.evaluate('/COLLADA/library_effects/effect[@id="'+effectId+'"]/profile_COMMON/newparam[@sid="'+diffuseSurfaceId+'"]' , colladaXML, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null ).singleNodeValue;
+              var diffuseSurface = colladaXML.evaluate('/d:COLLADA/d:library_effects/d:effect[@id="'+effectId+'"]/d:profile_COMMON/d:newparam[@sid="'+diffuseSurfaceId+'"]' , colladaXML, nsResolver, XPathResult.FIRST_ORDERED_NODE_TYPE, null ).singleNodeValue;
               textureIdReferences[effectId]["diffuse"] = diffuseSurface.firstElementChild.firstElementChild.innerHTML;
             }
         }
         
         //reflective texture finding
-        var reflectiveTechnique = colladaXML.evaluate('/COLLADA/library_effects/effect[@id="'+effectId+'"]/profile_COMMON/technique/blinn/reflective', colladaXML, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null ).singleNodeValue
+        var reflectiveTechnique = colladaXML.evaluate('/d:COLLADA/d:library_effects/d:effect[@id="'+effectId+'"]/d:profile_COMMON/d:technique/d:blinn/d:reflective', colladaXML, nsResolver, XPathResult.FIRST_ORDERED_NODE_TYPE, null ).singleNodeValue
         if(reflectiveTechnique) {
             var reflectiveTextureId = reflectiveTechnique.firstElementChild.getAttribute('texture');
             if (reflectiveTextureId != null) 
             {
-                var reflectiveEffect = colladaXML.evaluate('/COLLADA/library_effects/effect[@id="'+effectId+'"]/profile_COMMON/newparam[@sid="'+reflectiveTextureId+'"]' , colladaXML, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null ).singleNodeValue;
+                var reflectiveEffect = colladaXML.evaluate('/d:COLLADA/d:library_effects/d:effect[@id="'+effectId+'"]/d:profile_COMMON/d:newparam[@sid="'+reflectiveTextureId+'"]' , colladaXML, nsResolver, XPathResult.FIRST_ORDERED_NODE_TYPE, null ).singleNodeValue;
                 var reflectiveSurfaceId = reflectiveEffect.firstElementChild.firstElementChild.innerHTML;
-                var reflectiveSurface = colladaXML.evaluate('/COLLADA/library_effects/effect[@id="'+effectId+'"]/profile_COMMON/newparam[@sid="'+reflectiveSurfaceId+'"]' , colladaXML, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null ).singleNodeValue;
+                var reflectiveSurface = colladaXML.evaluate('/d:COLLADA/d:library_effects/d:effect[@id="'+effectId+'"]/d:profile_COMMON/d:newparam[@sid="'+reflectiveSurfaceId+'"]' , colladaXML, nsResolver, XPathResult.FIRST_ORDERED_NODE_TYPE, null ).singleNodeValue;
                 textureIdReferences[effectId]["reflective"] = reflectiveSurface.firstElementChild.firstElementChild.innerHTML;
             }
         }
 
         //property finding
         effectIdToBlinnProperties[effectId] = {}
-        effectIdToBlinnProperties[effectId]["ambient"] = colladaXML.evaluate('/COLLADA/library_effects/effect[@id="'+effectId+'"]/profile_COMMON/technique/blinn/ambient/color', colladaXML, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null ).singleNodeValue.innerHTML.trim().split(' ').map(parseFloat)
-        effectIdToBlinnProperties[effectId]["emission"] = colladaXML.evaluate('/COLLADA/library_effects/effect[@id="'+effectId+'"]/profile_COMMON/technique/blinn/emission/color', colladaXML, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null ).singleNodeValue.innerHTML.trim().split(' ').map(parseFloat)
-        effectIdToBlinnProperties[effectId]["shininess"] = parseFloat(colladaXML.evaluate('/COLLADA/library_effects/effect[@id="'+effectId+'"]/profile_COMMON/technique/blinn/shininess/float', colladaXML, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null ).singleNodeValue.innerHTML)
-        effectIdToBlinnProperties[effectId]["index_of_refraction"] = parseFloat(colladaXML.evaluate('/COLLADA/library_effects/effect[@id="'+effectId+'"]/profile_COMMON/technique/blinn/index_of_refraction/float', colladaXML, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null ).singleNodeValue.innerHTML)
+        effectIdToBlinnProperties[effectId]["ambient"] = colladaXML.evaluate('/d:COLLADA/d:library_effects/d:effect[@id="'+effectId+'"]/d:profile_COMMON/d:technique/d:blinn/d:ambient/d:color', colladaXML, nsResolver, XPathResult.FIRST_ORDERED_NODE_TYPE, null ).singleNodeValue.innerHTML.trim().split(' ').map(parseFloat)
+        effectIdToBlinnProperties[effectId]["emission"] = colladaXML.evaluate('/d:COLLADA/d:library_effects/d:effect[@id="'+effectId+'"]/d:profile_COMMON/d:technique/d:blinn/d:emission/d:color', colladaXML, nsResolver, XPathResult.FIRST_ORDERED_NODE_TYPE, null ).singleNodeValue.innerHTML.trim().split(' ').map(parseFloat)
+        effectIdToBlinnProperties[effectId]["shininess"] = parseFloat(colladaXML.evaluate('/d:COLLADA/d:library_effects/d:effect[@id="'+effectId+'"]/d:profile_COMMON/d:technique/d:blinn/d:shininess/d:float', colladaXML, nsResolver, XPathResult.FIRST_ORDERED_NODE_TYPE, null ).singleNodeValue.innerHTML)
+        effectIdToBlinnProperties[effectId]["index_of_refraction"] = parseFloat(colladaXML.evaluate('/d:COLLADA/d:library_effects/d:effect[@id="'+effectId+'"]/d:profile_COMMON/d:technique/d:blinn/d:index_of_refraction/d:float', colladaXML, nsResolver, XPathResult.FIRST_ORDERED_NODE_TYPE, null ).singleNodeValue.innerHTML)
 
-        var specularColor = colladaXML.evaluate('/COLLADA/library_effects/effect[@id="'+effectId+'"]/profile_COMMON/technique/blinn/specular/color', colladaXML, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null ).singleNodeValue
+        var specularColor = colladaXML.evaluate('/d:COLLADA/d:library_effects/d:effect[@id="'+effectId+'"]/d:profile_COMMON/d:technique/d:blinn/d:specular/d:color', colladaXML, nsResolver, XPathResult.FIRST_ORDERED_NODE_TYPE, null ).singleNodeValue
         if (specularColor){
             effectIdToBlinnProperties[effectId]["specular"] = specularColor.innerHTML.trim().split(' ').map(parseFloat);
         }
@@ -81,7 +81,7 @@ function ParseLibraryEffects (library_effects, colladaXML) {
             effectIdToBlinnProperties[effectId]["specular"] = [1.0,1.0,1.0,1.0]
         }
 
-        var reflectiveColor = colladaXML.evaluate('/COLLADA/library_effects/effect[@id="'+effectId+'"]/profile_COMMON/technique/blinn/reflective/color', colladaXML, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null ).singleNodeValue
+        var reflectiveColor = colladaXML.evaluate('/d:COLLADA/d:library_effects/d:effect[@id="'+effectId+'"]/d:profile_COMMON/d:technique/d:blinn/d:reflective/d:color', colladaXML, nsResolver, XPathResult.FIRST_ORDERED_NODE_TYPE, null ).singleNodeValue
         if (reflectiveColor){
             effectIdToBlinnProperties[effectId]["reflective"] = reflectiveColor.innerHTML.trim().split(' ').map(parseFloat);
         }
@@ -90,7 +90,7 @@ function ParseLibraryEffects (library_effects, colladaXML) {
             effectIdToBlinnProperties[effectId]["reflective"] = [1.0,1.0,1.0,1.0]
         }
 
-        var diffuseColor = colladaXML.evaluate('/COLLADA/library_effects/effect[@id="'+effectId+'"]/profile_COMMON/technique/blinn/diffuse/color', colladaXML, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null ).singleNodeValue
+        var diffuseColor = colladaXML.evaluate('/d:COLLADA/d:library_effects/d:effect[@id="'+effectId+'"]/d:profile_COMMON/d:technique/d:blinn/d:diffuse/d:color', colladaXML, nsResolver, XPathResult.FIRST_ORDERED_NODE_TYPE, null ).singleNodeValue
         if (diffuseColor){
             effectIdToBlinnProperties[effectId]["diffuse"] = diffuseColor.innerHTML.trim().split(' ').map(parseFloat);
         }

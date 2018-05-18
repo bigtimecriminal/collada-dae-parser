@@ -21,7 +21,7 @@ function ParseCollada (colladaXML) {
   var parser = new DOMParser();
   colladaXML = parser.parseFromString(colladaXML, "text/xml");
 
-//  function nsResolver(prefix) { return "http://www.collada.org/2005/11/COLLADASchema"; };
+  window.nsResolver = function nsResolver(prefix) { return "http://www.collada.org/2005/11/COLLADASchema"; };
 //  var daeIterator = colladaXML.evaluate('/COLLADA/library_geometries', colladaXML, nsResolver, XPathResult.ANY_TYPE, null );
 //  var geometriesLib = daeIterator.iterateNext();
 
