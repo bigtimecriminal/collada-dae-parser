@@ -1,38 +1,36 @@
 module.exports = ParseLibraryGeometries
 
 function ParseLibraryGeometries (nsResolver, colladaXML) {
-  
   var outGeometries = []
-
   var geomNames = []
-  var daeIterator = colladaXML.evaluate('/d:COLLADA/d:library_geometries/d:geometry', colladaXML, nsResolver, XPathResult.ANY_TYPE, null )
-  var geomElement = daeIterator.iterateNext()  
+
+  var daeIterator = colladaXML.evaluate('/d:COLLADA/d:library_geometries/d:geometry', colladaXML, nsResolver, XPathResult.ANY_TYPE, null)
+  var geomElement = daeIterator.iterateNext()
   while (geomElement) {
-    if (geomElement.getElementsByTagName('triangles').length > 0)
-    {
+    if (geomElement.getElementsByTagName('triangles').length > 0) {
       geomNames.push(geomElement.getAttribute('id'))
     }
-    geomElement = daeIterator.iterateNext()  
+    geomElement = daeIterator.iterateNext()
   }
-  
+
   geomNames.forEach(function (geomName) {
     var meshConnectivityLists = []
     var materials = []
-    var daeIterator = colladaXML.evaluate('/d:COLLADA/d:library_geometries/d:*[@id="'+geomName+'"]/d:mesh/d:triangles', colladaXML, nsResolver, XPathResult.ANY_TYPE, null )
+
+    var daeIterator = colladaXML.evaluate('/d:COLLADA/d:library_geometries/d:*[@id="' + geomName + '"]/d:mesh/d:triangles', colladaXML, nsResolver, XPathResult.ANY_TYPE, null)
     var daeElement = daeIterator.iterateNext()
     while (daeElement) {
-      meshConnectivityLists.push(daeElement.getElementsByTagName('p')[0].innerHTML.trim().split(' ').map(function (d) { return parseInt(d)}))
-      var material = daeElement.getAttribute("material")
-      if (material)
-      {
+      meshConnectivityLists.push(daeElement.getElementsByTagName('p')[0].innerHTML.trim().split(' ').map(function (d) { return parseInt(d) }))
+      var material = daeElement.getAttribute('material')
+      if (material) {
         materials.push(material)
       }
-      var daeElement = daeIterator.iterateNext()
+      daeElement = daeIterator.iterateNext()
     }
 
-    vertexPropertyBuffers = {}
-    var daeIterator = colladaXML.evaluate('/d:COLLADA/d:library_geometries/d:*[@id="'+geomName+'"]/d:mesh/d:source', colladaXML, nsResolver, XPathResult.ANY, null ) 
-    var daeElement = daeIterator.iterateNext()
+    var vertexPropertyBuffers = {}
+    daeIterator = colladaXML.evaluate('/d:COLLADA/d:library_geometries/d:*[@id="' + geomName + '"]/d:mesh/d:source', colladaXML, nsResolver, XPathResult.ANY, null)
+    daeElement = daeIterator.iterateNext()
     while (daeElement) {
       var id = daeElement.getAttribute('id').split('-').pop()
       var value = daeElement.firstElementChild.innerHTML.trim().split(' ').map(Number)
@@ -40,18 +38,17 @@ function ParseLibraryGeometries (nsResolver, colladaXML) {
       daeElement = daeIterator.iterateNext()
     }
 
-
-    var vertexPositions = vertexPropertyBuffers["positions"]
-    var vertexNormals = vertexPropertyBuffers["normals"]
-    var vertexTangents = vertexPropertyBuffers["tangents"]
-    var vertexBitangents = vertexPropertyBuffers["bitangents"]
+    var vertexPositions = vertexPropertyBuffers['positions']
+    var vertexNormals = vertexPropertyBuffers['normals']
+    var vertexTangents = vertexPropertyBuffers['tangents']
+    var vertexBitangents = vertexPropertyBuffers['bitangents']
     var vertexUVs = []
-    //texcoord set 0
-    if ( vertexPropertyBuffers["0"] )  {
-      vertexUVs = vertexPropertyBuffers["0"]
+    // texcoord set 0
+    if (vertexPropertyBuffers['0']) {
+      vertexUVs = vertexPropertyBuffers['0']
     }
 
-    outGeometries.push ({
+    outGeometries.push({
       id: geomName,
       materials: materials,
       vertexPositions: vertexPositions,
