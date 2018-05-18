@@ -8,10 +8,10 @@ var parseLibraryVisualScenes = require('./library_visual_scenes/parse-visual-sce
 module.exports = ParseCollada
 
 function ParseCollada (colladaXML) {
-  var parser = new DOMParser();
-  colladaXML = parser.parseFromString(colladaXML, "text/xml");
+  var parser = new DOMParser()
+  colladaXML = parser.parseFromString(colladaXML, "text/xml")
 
-  nsResolver = function nsResolver(prefix) { return "http://www.collada.org/2005/11/COLLADASchema"; };
+  nsResolver = function nsResolver(prefix) { return "http://www.collada.org/2005/11/COLLADASchema" }
 
   var parsedObject = {}
   var parsedLibraryGeometries = parseLibraryGeometries(nsResolver, colladaXML)
@@ -36,13 +36,13 @@ function ParseCollada (colladaXML) {
     if (parsedLibraryGeometry.vertexUVs.length > 0) {
       parsedGeometry.vertexUVs = parsedLibraryGeometry.vertexUVs
     }
-    parsedObject.geometries.push(parsedGeometry);
+    parsedObject.geometries.push(parsedGeometry)
   })
 
-  parsedObject.materialEffectReferences = materialsData.materialEffectReferences;
-  parsedObject.textureIdReferences = effectsData.textureIdReferences;
-  parsedObject.effectIdToBlinnProperties = effectsData.effectIdToBlinnProperties;
-  parsedObject.imageNameReferences = imagesData.imageNameReferences;
+  parsedObject.materialEffectReferences = materialsData.materialEffectReferences
+  parsedObject.textureIdReferences = effectsData.textureIdReferences
+  parsedObject.effectIdToBlinnProperties = effectsData.effectIdToBlinnProperties
+  parsedObject.imageNameReferences = imagesData.imageNameReferences
 
-  return parsedObject;
+  return parsedObject
 }
