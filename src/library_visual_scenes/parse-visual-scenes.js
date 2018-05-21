@@ -17,7 +17,7 @@ function ParseVisualScenes (nsResolver, colladaXML) {
     node.geometry = daeElement.getElementsByTagName('instance_geometry')[0].getAttribute('url').slice(1)
     node.materialNameReferences = {}
 
-    Array.from(daeElement.getElementsByTagName('instance_material')).forEach((d) => {
+    Array.from(daeElement.getElementsByTagName('instance_material')).forEach(function (d) {
       node.materialNameReferences[d.getAttribute('symbol')] = d.getAttribute('target').slice(1)
     })
 
