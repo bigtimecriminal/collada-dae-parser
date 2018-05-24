@@ -29,7 +29,7 @@ function ParseLibraryGeometries (nsResolver, colladaXML) {
     }
 
     var vertexPropertyBuffers = {}
-    daeIterator = colladaXML.evaluate('/d:COLLADA/d:library_geometries/d:*[@id="' + geomName + '"]/d:mesh/d:source', colladaXML, nsResolver, XPathResult.ANY, null)
+    daeIterator = colladaXML.evaluate('/d:COLLADA/d:library_geometries/d:*[@id="' + geomName + '"]/d:mesh/d:source', colladaXML, nsResolver, XPathResult.ANY_TYPE, null)
     daeElement = daeIterator.iterateNext()
     while (daeElement) {
       var id = daeElement.getAttribute('id').split('-').pop()
