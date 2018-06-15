@@ -14,7 +14,12 @@ function ParseVisualScenes (nsResolver, colladaXML) {
     node.id = daeElement.getAttribute('id')
     node.parent = daeElement.parentElement ? daeElement.parentElement.getAttribute('id') : null
     node.matrix = daeElement.getElementsByTagName('matrix')[0].innerHTML.trim().split(' ').map(parseFloat)
-    node.geometry = daeElement.getElementsByTagName('instance_geometry')[0].getAttribute('url').slice(1)
+    var potentialGeometry = daeElement.getElementsByTagName('instance_geometry')[0]
+    // don't steal your child's geometry
+    if(potentialGeometry.parentNode.getAttribute('id') === node.id)
+    {
+        node.geometry = potentialGeometry.getAttribute('url').slice(1)
+    }
     node.materialNameReferences = {}
 
     Array.from(daeElement.getElementsByTagName('instance_material')).forEach(function (d) {
