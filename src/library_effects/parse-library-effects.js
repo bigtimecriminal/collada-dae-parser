@@ -27,16 +27,18 @@ function ParseLibraryEffects (nsResolver, colladaXML) {
     }
 
     // commented out untill can find model with these textures
-    // spec texture finding
-//        var specularTechnique = colladaXML.evaluate('/COLLADA/library_effects/effect[@id="' + effectIds[i] + '"]/profile_COMMON/technique/extra/technique[1]/bump', colladaXML, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null ).singleNodeValue
-//        if(specularTechnique)
-//        {
-//            var specularTextureId = d.profile_COMMON[0].technique[0].blinn[0]["specular"][0]["texture"][0].$["texture"]
-//            var specularEffect = d.profile_COMMON[0].newparam.find( function (d) { return (d.$.sid === specularTextureId) })
-//            var specularSurfaceId = specularEffect["sampler2D"][0].source[0]
-//            var specularSurface = d.profile_COMMON[0].newparam.find( function (d) { return (d.$.sid === specularSurfaceId) })
-//            textureIdReferences[effectIds[i]]["specular"] = specularSurface.surface[0].init_from[0]
-//        }
+    //  spec texture finding
+    var specularTechnique = colladaXML.evaluate('/d:COLLADA/d:library_effects/d:effect[@id="' + effectId + '"]/d:profile_COMMON/d:technique/d:blinn/d:specular', colladaXML, nsResolver, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue
+    if(specularTechnique)
+    {
+      var specularTextureId = specularTechnique.firstElementChild.getAttribute('texture')
+      if (specularTextureId != null) {
+        var specularEffect = colladaXML.evaluate('/d:COLLADA/d:library_effects/d:effect[@id="' + effectId + '"]/d:profile_COMMON/d:newparam[@sid="' + specularTextureId + '"]', colladaXML, nsResolver, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue
+        var specularSurfaceId = specularEffect.firstElementChild.firstElementChild.innerHTML
+        var specularSurface = colladaXML.evaluate('/d:COLLADA/d:library_effects/d:effect[@id="' + effectId + '"]/d:profile_COMMON/d:newparam[@sid="' + specularSurfaceId + '"]', colladaXML, nsResolver, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue
+        textureIdReferences[effectId]['specular'] = specularSurface.firstElementChild.firstElementChild.innerHTML
+      }
+    }
 
     // diffuse texture finding
     var diffuseTechnique = colladaXML.evaluate('/d:COLLADA/d:library_effects/d:effect[@id="' + effectId + '"]/d:profile_COMMON/d:technique/d:blinn/d:diffuse', colladaXML, nsResolver, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue
